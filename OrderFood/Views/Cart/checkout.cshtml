@@ -1,0 +1,86 @@
+﻿@model OrderFood.Models.CartModel
+@using Microsoft.AspNetCore.Identity
+@using OrderFood.Areas.Identity.Data
+
+@inject SignInManager<AccountUser> SignInManager
+@inject UserManager<AccountUser> UserManager
+<h2 class="h2-checkout" style="text-align : center">Thanh toán</h2>
+
+<div class="row-checkout">
+    <div class="checkout">
+        <form asp-action="PlaceOrder" method="post" class="form-checkOut-info">
+            <input type="hidden" class="form-input-checkout" id="UserId" name="UserId" value="@( (User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.Id: null)" required>
+
+            <div class="form-checkout form-group">
+                <label for="FirstName">Họ</label>
+                <input type="text" class="form-input-checkout" id="FirstName" name="FirstName" value="@( (User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.FirstName: null)" required>
+            </div>
+            <div class="form-checkout form-group">
+                <label for="LastName">Tên</label>
+                <input type="text" class="form-input-checkout" id="LastName" name="LastName" value="@((User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.LastName : null)" required>
+            </div>
+            <div class="form-checkout form-group">
+                <label for="Email">Email</label>
+                <input type="text" class="form-input-checkout" id="Email" name="Email" value="@((User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.Email : null)" required>
+            </div>
+            <div class="form-checkout form-group">
+                <label for="PhoneNumber">Số diện thoại</label>
+                <input type="text" class="form-input-checkout" id="PhoneNumber" name="PhoneNumber" value="@( (User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.PhoneNumber :null)" required>
+            </div>
+            <div class="form-checkout form-group">
+                <label for="Address">Địa chỉ</label>
+                <input type="text" class="form-input-checkout" id="Address" name="Address" value="@((User.Identity.IsAuthenticated) ? UserManager.GetUserAsync(User).Result.Address : null)" required>
+            </div>
+
+            <div class="form-checkout">
+                <h4>Phương thức thanh toán</h4>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="PaymentMethods" value="Thanh toán khi nhận hàng" checked class="select-checkout"> Thanh toán khi nhận hàng
+                    </label>
+                    <br> <!-- Thêm thẻ <br> để tạo dòng mới -->
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="PaymentMethods" value="Momo" class="select-checkout"> Thanh toán qua MoMo
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Đặt hàng</button>
+        </form>
+    </div>
+    <div class="order-info-food">
+        <h4>Tổng đơn hàng</h4>
+        <hr>
+        <div class="order">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tên món ăn</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.CartModel.getAllItems())
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Price.ToString("N0")<sub>đ</sub></td>
+                            <td>@item.Quantity</td>
+                            <td>@item.LineTotal.ToString("N0")<sub>đ</sub></td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3">Phí vận chuyển</td>
+                        <td>Miễn phí</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong>Tổng tiền</strong></td>
+                        <td><strong>@ViewBag.CartModel.getTotal().ToString("N0")<sub>đ</sub></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

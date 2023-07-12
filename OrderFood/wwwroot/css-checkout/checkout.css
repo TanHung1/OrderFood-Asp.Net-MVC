@@ -1,0 +1,66 @@
+﻿.row-checkout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.checkout {
+    width: 50%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+}
+
+.form-checkout-info {
+    display: flex;
+    flex-direction: column;
+}
+
+    .form-checkout-info label {
+        font-weight: bold;
+    }
+
+.form-input-checkout {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.select-checkout {
+    margin-right: 10px;
+}
+
+.order-info-food {
+    width: 50%;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.order-summary {
+    margin-top: 10px;
+}
+
+    .order-summary table {
+        width: 100%;
+    }
+
+    .order-summary th, .order-summary td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .order-summary th {
+        font-weight: bold;
+    }
+
+    .order-summary tr:last-child td:first-child {
+        font-weight: bold;
+    }
+
+    .order-summary tr:last-child td:last-child {
+        font-weight: bold;
+        font-size: 1.2em;
+    }

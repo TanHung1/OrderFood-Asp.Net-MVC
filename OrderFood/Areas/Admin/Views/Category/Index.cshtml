@@ -1,0 +1,33 @@
+﻿<h1>Danh sách các loại món ăn</h1>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th scope="col">STT</th>
+            <th scope="col">Loại món</th>
+            <th scope="col">Thông tin</th>
+            <th scope="col">Lựa chọn</th>
+        </tr>
+    </thead>
+   
+    <tbody>
+        @{
+            int stt = 1;
+        }
+        @foreach (var item in Model)
+        {
+            
+            <tr>
+                
+                <td>@(stt++)</td>
+                <td>@item.NameCategory</td>
+                <td>@item.Description</td>
+                <td>
+                    <a asp-action="EditCategory" asp-route-id="@item.CategoryId">Chỉnh sửa</a> |
+                    <a asp-action="DeleteCategory" asp-route-id="@item.CategoryId" onclick="return confirm('Bạn có chắc chắn muốn xóa loại món ăn này không?')">Xóa</a>
+                </td>
+            </tr>
+            
+        }
+    </tbody>
+</table>

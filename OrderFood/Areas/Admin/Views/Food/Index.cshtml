@@ -1,0 +1,39 @@
+﻿@using OrderFood.Repository;
+
+@inject ICategoryRepository _categoryRepository
+<h1>Danh sách các món ăn</h1>
+<table class="table" style="table-layout: fixed; padding: 100px; width: 100%;">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên món</th>
+            <th scope="col">Loại món</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Giá (VNĐ)</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Lựa chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int stt = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@(stt++)</th>
+                <td>@item.NameDish</td>
+                <td>@(_categoryRepository.findById(item.CategoryId)?.NameCategory)</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("N0")<sub>đ</sub></td>
+                <td><img src="~/images/@item.Image" alt="Image" style="width: 50%" /></td>
+                <td>
+                    <a asp-action="EditFood" asp-route-id="@item.DishId">Chỉnh sửa</a> |
+                    <a asp-action="DeleteDish" asp-route-id="@item.DishId" onclick="return confirm('Bạn có chắc chắn muốn xóa món ăn này không?')">Xóa</a>
+                </td>
+
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>

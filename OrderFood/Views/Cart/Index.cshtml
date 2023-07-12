@@ -1,0 +1,96 @@
+﻿@model CartModel
+
+@if (Model.getAllItems().Count == 0)
+{
+    <div class="empty-cart" style="text-align: center">
+        <p>Giỏ hàng đang trống</p>
+    </div>
+}
+else
+{
+    <div class="cart-container">
+
+        <div class="cart-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="product-remove">&nbsp;</th>
+                        <th class="product-thumbnail">&nbsp;</th>
+                        <th class="product-name">Sản phẩm</th>
+                        <th class="product-price">Đơn giá</th>
+                        <th class="product-quantity">Số lượng</th>
+                        <th class="product-subtotal">Tổng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.getAllItems())
+                    {
+                        <tr class="cart-item">
+                            <td class="product-remove">
+                                @using (Html.BeginForm("RemoveFromCart", "Cart", new { id = item.Id }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="remove-button">
+                                        X
+                                    </button>
+                                }
+                            </td>
+                            <td class="product-thumbnail">
+                                <a href="#"><img src="~/images/@item.ImagePath" alt="@item.Name"></a>
+                            </td>
+                            <td class="product-name">
+                                <span href="#">@item.Name</span>
+                            </td>
+                            <td class="product-price">
+                                <span class="price">@item.Price.ToString("N0")<sub>đ</sub></span>
+                            </td>
+                           
+                            <td class="product-quantity">
+                                @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post))
+                                {
+                                    @Html.Hidden("item.id", item.Id)
+                                    <div class="quantity-input">
+                                        <button type="submit" class="quantity-button minus" name="btnUpdateQuantity" value="-">
+                                            -
+                                        </button>
+                                        @Html.TextBox("item.Quantity", item.Quantity, new { @class = "quantity-input-field", @type = "number" })
+                                        <button type="submit" class="quantity-button plus" name="btnUpdateQuantity" value="+">
+                                             +
+                                        </button>
+                                    </div>
+                                }
+                            </td>
+                            <td class="product-subtotal">
+                                <span class="subtotal">@item.LineTotal.ToString("N0")<sub>đ</sub></span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="cart-summary">
+            <div class="cart-summary-inner">
+                <h4>Tổng giỏ hàng</h4>
+                <div class="cart-summary-table">
+                    <table>
+                        <tbody>
+                            
+                            <tr>
+                                <td>Tổng tiền sản phẩm</td>
+                                <td class="cart-summary-value">@Model.getTotal().ToString("N0")<sub>đ</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Phí vận chuyển</td>
+                                <td class="cart-summary-value">Miễn phí</td>
+                            </tr>
+                            <tr class="cart-summary-total">
+                                <td>Tổng tiền thanh toán</td>
+                                <td class="cart-summary-value">@Model.getTotal().ToString("N0")<sub>đ</sub></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="@Url.Action("Checkout", "Cart")" class="checkout-button">Thanh toán</a>
+            </div>
+        </div>
+    </div>
+}

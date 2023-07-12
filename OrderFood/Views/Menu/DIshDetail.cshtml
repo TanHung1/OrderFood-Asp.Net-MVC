@@ -1,0 +1,19 @@
+﻿@using OrderFood.Repository;
+@model OrderFood.Models.Dish
+@inject ICategoryRepository _categoryRepository
+<div class="container-dishdetail">
+    <div class="dishdetail">
+        <div class="img-dish">
+            <img src="@Url.Content("~/images/" + Model.Image)" alt="@Model.NameDish" class="img-fluid" />
+        </div>
+        <div class="dish-content">
+            <h1 class="name-dish-detail">Tên món ăn: @Model.NameDish</h1>
+            <p class="des-dish-detail"> Mô tả về món ăn: @Model.Description</p>
+            <p>Loại món ăn: @(_categoryRepository.findById(Model.CategoryId)?.NameCategory)</p>
+            <h3 class="price-dish-detail">Giá: @Model.Price.ToString("N0")<sub>đ</sub></></h3>
+
+    <a class="btn-addtocard" asp-action="AddToCart" asp-controller="cart" asp-route-id="@Model.DishId">Thêm vào giỏ hàng</a>
+
+        </div>
+    </div>  
+</div>

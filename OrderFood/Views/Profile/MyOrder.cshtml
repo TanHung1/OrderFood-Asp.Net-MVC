@@ -1,0 +1,53 @@
+﻿@model List<Order>
+@using OrderFood.Repository;
+@inject IOrderItemRepository _orderItemRepository
+
+<h1>Lịch sử đơn hàng của tôi</h1>
+
+@if (Model.Count == 0)
+{
+    <p>Không có đơn hàng nào!</p>
+}
+else
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Số thứ tự</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Tên món</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Ngày đặt hàng</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Hình thức thanh toán</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                var orderItems = _orderItemRepository.GetOrderItemsByOrderId(order.OrderId);
+                <tr>
+                    <td>@(Model.IndexOf(order) + 1)</td>
+                   <td>@order.Address</td>
+                   <td>@order.PhoneNumber</td>
+                   @foreach( var item in orderItems)
+                    {
+                        <td>@item.NameDish</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.OrderDate</td>
+                        <td>@item.Total.ToString("N0")<sub>đ</sub></td>
+                       
+                    }
+                    <td>@order.PaymentMethods</td>
+                    @foreach(var item in orderItems)
+                    {
+                        <td>@item.Status</td>
+                    }
+
+              </tr>
+            }
+        </tbody>
+    </table>
+}

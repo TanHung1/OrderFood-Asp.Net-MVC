@@ -1,0 +1,54 @@
+﻿    @model OrderFood.Models.Dish
+    <div style="padding-left:50px">
+    <h1>Chỉnh sửa món ăn</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="UpdateFood" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="DishId" />
+                <div class="form-group">
+                    <label asp-for="NameDish" class="control-label"></label>
+                    <input asp-for="NameDish" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+              
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input asp-for="Image" class="form-control" type="file"/>
+                    <br />
+                    @{
+                        var imagePath = Model.Image != null ? ("/images/" + Model.Image) : "";
+                    }
+                    @if (!string.IsNullOrEmpty(imagePath))
+                    {
+                        <img src="@imagePath" class="img-thumbnail" />
+                        <br />
+                    }
+                   
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Chỉnh sửa món ăn" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    </div>
