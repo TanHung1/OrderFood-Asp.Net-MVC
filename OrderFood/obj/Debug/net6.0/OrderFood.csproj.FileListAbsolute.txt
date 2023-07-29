@@ -274,3 +274,6 @@ D:\Phattrienweb\OrderFood\OrderFood\obj\Debug\net6.0\scopedcss\Views\Shared\_Adm
 D:\Phattrienweb\OrderFood\OrderFood\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\Phattrienweb\OrderFood\OrderFood\obj\Debug\net6.0\scopedcss\bundle\OrderFood.styles.css
 D:\Phattrienweb\OrderFood\OrderFood\obj\Debug\net6.0\scopedcss\projectbundle\OrderFood.bundle.scp.css
+D:\Phattrienweb\OrderFood\OrderFood\bin\Debug\net6.0\JetBrains.Annotations.dll
+D:\Phattrienweb\OrderFood\OrderFood\bin\Debug\net6.0\X.PagedList.dll
+D:\Phattrienweb\OrderFood\OrderFood\bin\Debug\net6.0\X.PagedList.Mvc.Core.dll

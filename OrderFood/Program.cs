@@ -1,10 +1,9 @@
-using OrderFood.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using OrderFood.Repository;
 using Microsoft.AspNetCore.Identity;
-using OrderFood.Data;
+using Microsoft.EntityFrameworkCore;
 using OrderFood.Areas.Identity.Data;
+using OrderFood.Data;
+using OrderFood.Models;
+using OrderFood.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +30,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
-}) ;
+});
 
 //DI
 builder.Services.AddTransient<IDishRepository, DishRepository>();
@@ -55,10 +54,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.UseSession();
 
 app.MapAreaControllerRoute(

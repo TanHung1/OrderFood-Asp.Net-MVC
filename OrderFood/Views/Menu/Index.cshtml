@@ -5,9 +5,8 @@
 <section class="food_section layout_padding">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>
-                Thực đơn chúng tôi
-            </h2>
+            <h2>Thực đơn chúng tôi</h2>
+            
         </div>
         <form asp-action="Search" method="get">
             <div class="input-group">
@@ -17,12 +16,25 @@
                 </div>
             </div>
         </form>
+        <div style="float:right; margin-top:10px">
+            <form method="post" asp-route-action="Index" asp-route-controller="Menu">
+                <label for="sortDish">Sắp xếp theo</label>
+                <select name="sortDish" id="sortDish" onchange="this.form.submit()">
+                    <option selected disabled>lựa chọn</option>
+                    <option value="">Mặc định</option>
+                    <option value="price_asc">Giá tăng dần</option>
+                    <option value="price_desc">Giá giảm dần</option>
+                </select>
+            </form>
+        </div>
         <ul class="filters_menu">
             <li class="active" data-filter="*"><a asp-action="Index" asp-controller="Menu" style="padding: 10px ">All</a></li>
             @foreach (var item in categoryRepository.GetAll())
             {
 
-                <li data-filter=".category-@item.CategoryId"><a asp-action="findDishByCategoryId" asp-controller="Menu" asp-route-id="@item.CategoryId">@(_categoryRepository.findById(item.CategoryId)?.NameCategory)</a></li>
+                <li data-filter=".category-@item.CategoryId">
+                    <a asp-action="findDishByCategoryId" asp-controller="Menu" asp-route-id="@item.CategoryId">
+                        @(_categoryRepository.findById(item.CategoryId)?.NameCategory)</a></li>
             }
             
             
@@ -31,9 +43,9 @@
         </ul>
 
         <div class="filters-content">
-            <div class="row grid">
+            <div class="row grid" id="dishes">
                 @foreach(var item in Model){
-                 <div class="col-sm-6 col-lg-4 all pizza category-@item.CategoryId">
+                 <div class="col-sm-6 col-lg-4 all pizza category @item.CategoryId">
                     <div class="box">
                         <div>
                             <div class="img-box">

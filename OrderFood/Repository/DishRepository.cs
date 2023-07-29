@@ -1,6 +1,4 @@
 ﻿using OrderFood.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace OrderFood.Repository
 {
@@ -11,9 +9,14 @@ namespace OrderFood.Repository
         public bool Update(Dish dish);
         public bool Delete(string DishId);
         public Dish findByDishId(string id);
+        List<Dish> SearchDish(string searchString);
         public List<Dish> GetDishesByName(string name);
         public List<Dish> GetAllDishByCategoryID(int id);
         List<Dish> GetAll();
+
+        List<Dish> PriceIncrease();
+
+        List<Dish> PriceDecrease();
         Dish findById(Guid dishId);
     }
     public class DishRepository : IDishRepository
@@ -46,7 +49,7 @@ namespace OrderFood.Repository
             return true;
         }
 
-      
+
 
         public List<Dish> GetAll()
         {
@@ -67,7 +70,7 @@ namespace OrderFood.Repository
         public bool Update(Dish dish)
         {
             Dish d = _dbContext.Dishes.FirstOrDefault(x => x.DishId == dish.DishId);
-            if(d != null)
+            if (d != null)
             {
                 _dbContext.Entry(d).CurrentValues.SetValues(dish);
                 _dbContext.SaveChanges();
@@ -79,6 +82,22 @@ namespace OrderFood.Repository
         {
             Guid dishIdGuid = Guid.Parse(id);
             return _dbContext.Dishes.Where(x => x.DishId == dishIdGuid).FirstOrDefault();
+        }
+
+        public List<Dish> PriceIncrease()
+        {
+            return _dbContext.Dishes.OrderBy(x => x.Price).ToList();
+
+        }
+
+        public List<Dish> PriceDecrease()
+        {
+            return _dbContext.Dishes.OrderBy(x => x.Price).Reverse().ToList();
+        }
+
+        public List<Dish> SearchDish(string searchString)
+        {
+            return _dbContext.Dishes.Where(x => x.NameDish.Contains(searchString)).ToList();
         }
     }
 }

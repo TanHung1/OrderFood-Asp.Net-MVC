@@ -1,6 +1,5 @@
 ﻿@using OrderFood.Repository;
 @inject IOrderRepository _orderRepository
-
 <h1>Danh sách đơn hàng</h1>
 
 <form method="get">
@@ -33,7 +32,9 @@
     </thead>
     <tbody>
         @{
-            int stt = 1;
+            int page = ViewBag.Page ?? 1;
+            int pageSize = ViewBag.PageSize;
+            int stt = (page - 1) * pageSize + 1;
         }
         @foreach (var item in Model)
         {
@@ -58,3 +59,38 @@
         }
     </tbody>
 </table>
+@if (ViewBag.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=1&pageSize=@ViewBag.PageSize&status=@ViewContext.HttpContext.Request.Query["status"]">&laquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(ViewBag.CurrentPage - 1)&pageSize=@ViewBag.PageSize&status=@Context.Request.Query["status"]">&lsaquo;</a>
+                </li>
+            }
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="?page=@i&pageSize=@ViewBag.PageSize&status=@Context.Request.Query["status"]">@i</a>
+                </li>
+            }
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(ViewBag.CurrentPage + 1)&pageSize=@ViewBag.PageSize&status=@Context.Request.Query["status"]">&rsaquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=@ViewBag.TotalPages&pageSize=@ViewBag.PageSize&status=@Context.Request.Query["status"]">&raquo;</a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+}

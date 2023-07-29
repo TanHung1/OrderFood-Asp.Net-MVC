@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OrderFood.Models;
 using OrderFood.Repository;
+using X.PagedList;
 
 namespace OrderFood.Areas.Admin.Controllers
 {
@@ -16,7 +17,7 @@ namespace OrderFood.Areas.Admin.Controllers
             _orderRepository = orderRepository;
             _orderItemRepository = orderItemRepository;
         }
-        public IActionResult Index(string status)
+        public IActionResult Index(string status, int page = 1, int pageSize = 10)
         {
             var q1 = from c in _orderRepository.GetAllOrders()
                      select new SelectListItem()
@@ -33,9 +34,17 @@ namespace OrderFood.Areas.Admin.Controllers
                 orderItems = orderItems.Where(x => x.Status == status).ToList();
             }
 
-            orderItems = orderItems.OrderByDescending(x => x.OrderDate).ToList();
+            int totalItems = orderItems.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            orderItems = orderItems.OrderByDescending(x => x.OrderDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
-            return View(orderItems);
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = totalPages;
+            return View("Index", orderItems);
         }
 
         public IActionResult UpdateOrderItem(OrderItem orderItem)

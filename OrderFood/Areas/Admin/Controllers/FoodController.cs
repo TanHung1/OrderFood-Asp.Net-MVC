@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OrderFood.Models;
 using OrderFood.Repository;
+using X.PagedList;
+
 namespace OrderFood.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -14,47 +16,107 @@ namespace OrderFood.Areas.Admin.Controllers
             _dishRepository = dishRepository;
             _categoryRepository = categoryRepository;
         }
-
-        public IActionResult Index()
+        public IActionResult findDishCategory(int? id, string searchString, int page = 1, int pageSize = 10)
         {
-            var q1 = from c in _categoryRepository.GetAll()
-                     select new SelectListItem()
-                     {
-                         Text = c.NameCategory,
-                         Value = c.CategoryId.ToString(),
-                     };
-            ViewBag.CategoryId = q1.ToList();
-            
-            List<Dish> dishes = _dishRepository.GetAll();
+            var categories = _categoryRepository.GetAll();
+            ViewBag.Categories = categories;
+
+            List<Dish> dishes;
+            if (id.HasValue)
+            {
+                if (id.Value == 0) // check if the "Tất cả" option is selected
+                {
+                    dishes = _dishRepository.GetAll();
+                }
+                else
+                {
+                    dishes = _dishRepository.GetAllDishByCategoryID(id.Value);
+                }
+
+                ViewBag.CategoryId = id.Value; // set the CategoryId ViewBag variable
+            }
+            else
+            {
+                dishes = _dishRepository.GetAll();
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                dishes = _dishRepository.SearchDish(searchString);
+                ViewBag.SearchString = searchString; // set the SearchString ViewBag variable
+            }
+
+            int totalItem = dishes.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItem / pageSize);
+
+            dishes = dishes
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItem = totalItem;
+            ViewBag.TotalPages = totalPages;
+
+            return View("Index", dishes);
+        }
+        public IActionResult Index(string searchString, int page = 1, int pageSize = 10)
+        {
+            List<Dish> dishes;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                dishes = _dishRepository.SearchDish(searchString);
+            }
+            else
+            {
+                dishes = _dishRepository.GetAll();
+            }
+
+            int totalItem = dishes.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItem / pageSize);
+
+            dishes = dishes
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.SearchString = searchString;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItem = totalItem;
+            ViewBag.TotalPages = totalPages;
+
             return View(dishes);
         }
         //Tạo
         [HttpPost]
-      
+
         public IActionResult saveFood(Dish dish)
         {
             if (ModelState.IsValid)
             {
+
                 _dishRepository.Create(dish);
                 return RedirectToAction("Index");
             }
-            ModelState.Remove("Image");
-            var categories = _categoryRepository.GetAll()
-                .Select(c => new SelectListItem
-                {
-                    Text = c.NameCategory,
-                    Value = c.CategoryId.ToString()
-                })
-                .ToList();
-            ViewBag.CategoryId = categories;
-           
-            return View("Index",dish);
-         
+            else
+            {
+                var categories = _categoryRepository.GetAll()
+                    .Select(c => new SelectListItem()
+                    {
+                        Text = c.NameCategory,
+                        Value = c.CategoryId.ToString()
+                    })
+               .ToList();
+                ViewBag.CategoryId = categories;
+                return View("CreateFood", dish);
+            }
+
         }
         public IActionResult CreateFood()
         {
-            var categories= _categoryRepository.GetAll()
-                     .Select (c=> new SelectListItem()
+            var categories = _categoryRepository.GetAll()
+                     .Select(c => new SelectListItem()
                      {
                          Text = c.NameCategory,
                          Value = c.CategoryId.ToString()
@@ -101,7 +163,7 @@ namespace OrderFood.Areas.Admin.Controllers
                          Text = c.NameCategory,
                          Value = c.CategoryId.ToString()
                      };
-                     ViewBag.CategoryId = q1.ToList();
+            ViewBag.CategoryId = q1.ToList();
             return View("EditFood", _dishRepository.findById(id));
         }
     }

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System;
 namespace OrderFood.Models
 {
     public class Dish
@@ -15,7 +13,6 @@ namespace OrderFood.Models
 
         public string? Description { get; set; }
         [Required(ErrorMessage = "Giá không được để trống.")]
-
         public decimal Price { get; set; }
 
         public string? Image { get; set; }

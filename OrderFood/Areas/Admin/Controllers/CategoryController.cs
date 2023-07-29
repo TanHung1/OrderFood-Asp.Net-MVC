@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using OrderFood.Models;
 using OrderFood.Repository;
 namespace OrderFood.Areas.Admin.Controllers
@@ -12,19 +11,42 @@ namespace OrderFood.Areas.Admin.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int page = 1, int pageSize = 2)
         {
-            List<Category> categories = _categoryRepository.GetAll();
+            List<Category> categories;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                categories = _categoryRepository.Search(searchString);
+            }
+            else
+            {
+                categories = _categoryRepository.GetAll();
+            }
+
+            int totalItems = categories.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            categories = categories
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.SearchString = searchString;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItems = totalItems;
+            ViewBag.TotalPages = totalPages;
+
             return View(categories);
         }
         //Tạo
         [HttpPost]
         public IActionResult saveCategory(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 bool isCategoryNameExist = _categoryRepository.CheckNameCategory(category.NameCategory);
-                if(isCategoryNameExist)
+                if (isCategoryNameExist)
                 {
                     ModelState.AddModelError(string.Empty, "Tên loại món này đã tồn tại");
                     return View("CreateCategory");
@@ -34,15 +56,16 @@ namespace OrderFood.Areas.Admin.Controllers
             }
             else
             {
-                return View("Index", category);
+
+                return View("CreateCategory", category);
             }
-           
+
         }
         public IActionResult CreateCategory()
         {
             return View("CreateCategory", new Category());
         }
-       
+
         //Xóa
         public IActionResult DeleteCategory(int id)
         {
@@ -52,7 +75,7 @@ namespace OrderFood.Areas.Admin.Controllers
         //Chỉnh sửa
         public IActionResult EditCategory(int id)
         {
-            
+
             return View("EditCategory", _categoryRepository.findById(id));
         }
         public IActionResult UpdateCategory(Category category)

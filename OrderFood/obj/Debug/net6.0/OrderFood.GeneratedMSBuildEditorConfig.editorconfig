@@ -44,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRm9vZFxFZGl0Rm9vZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Phattrienweb/OrderFood/OrderFood/Areas/Admin/Views/Food/findDishByCategoryId.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRm9vZFxmaW5kRGlzaEJ5Q2F0ZWdvcnlJZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Phattrienweb/OrderFood/OrderFood/Areas/Admin/Views/Food/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRm9vZFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

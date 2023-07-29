@@ -1,18 +1,16 @@
 ﻿using OrderFood.Models;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using Microsoft.EntityFrameworkCore;
 namespace OrderFood.Repository
 {
     public interface ICategoryRepository
     {
-        public bool Create (Category category);
+        public bool Create(Category category);
 
-        public bool Update (Category category);
+        public bool Update(Category category);
         public Category findById(int id);
-        public bool Delete (int categoryId);
-
+        public bool Delete(int categoryId);
+        List<Category> Search(string searchString);
         public bool CheckNameCategory(string nameNameCategory);
-        public List<Category> GetAll ();
+        public List<Category> GetAll();
     }
     public class CategoryRepository : ICategoryRepository
     {
@@ -36,7 +34,7 @@ namespace OrderFood.Repository
             return true;
         }
 
-       
+
 
         public List<Category> GetAll()
         {
@@ -50,7 +48,7 @@ namespace OrderFood.Repository
         public bool Update(Category category)
         {
             Category c = _dBContext.Categories.FirstOrDefault(x => x.CategoryId == category.CategoryId);
-            if(c != null)
+            if (c != null)
             {
                 _dBContext.Entry(c).CurrentValues.SetValues(category);
                 _dBContext.SaveChanges();
@@ -62,11 +60,16 @@ namespace OrderFood.Repository
         public bool CheckNameCategory(string name)
         {
             Category c = _dBContext.Categories.Where(x => x.NameCategory.Trim() == name.Trim()).FirstOrDefault();
-            if(c == null)
+            if (c == null)
             {
                 return false;
             }
             return true;
+        }
+
+        public List<Category> Search(string searchString)
+        {
+            return _dBContext.Categories.Where(c => c.NameCategory.Contains(searchString)).ToList();
         }
     }
 }

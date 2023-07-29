@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OrderFood.Areas.Identity.Data;
 using OrderFood.Models;
-using System.Data;
 using System.Diagnostics;
 
 namespace OrderFood.Controllers
 {
- 
+
     public class HomeController : Controller
     {
         private SignInManager<AccountUser> _signInManager;
@@ -24,10 +22,7 @@ namespace OrderFood.Controllers
         {
             return View();
         }
-        public IActionResult About()
-        {
-            return View();
-        }
+
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync();
