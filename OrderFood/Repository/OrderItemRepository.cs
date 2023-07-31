@@ -10,6 +10,8 @@ namespace OrderFood.Repository
         public OrderItem findbyId(string OrderItemId);
 
         List<OrderItem> GetOrderItemsByOrderId(Guid orderId);
+        int CountOrderItem();
+        float SumTotal();
     }
     public class OrderItemRepository : IOrderItemRepository
     {
@@ -60,6 +62,17 @@ namespace OrderFood.Repository
         public List<OrderItem> GetOrderItemsByOrderId(Guid orderId)
         {
             return _context.OrderItems.Where(oi => oi.OrderId == orderId).ToList();
+        }
+
+        public int CountOrderItem()
+        {
+            return _context.OrderItems.Count(o => o.Status == "Đã giao");
+        }
+
+        public float SumTotal()
+        {
+            float total = _context.OrderItems.Where(o => o.Status == "Đã giao").Sum(o => o.Total);
+            return total;
         }
     }
 }

@@ -33,7 +33,7 @@
     <tbody>
         @{
             int page = ViewBag.Page ?? 1;
-            int pageSize = ViewBag.PageSize;
+            int pageSize = ViewBag.PageSize;    
             int stt = (page - 1) * pageSize + 1;
         }
         @foreach (var item in Model)

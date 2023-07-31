@@ -86,6 +86,7 @@ namespace OrderFood.Areas.Admin.Controllers
             ViewBag.TotalItem = totalItem;
             ViewBag.TotalPages = totalPages;
 
+
             return View(dishes);
         }
         //Tạo
@@ -166,5 +167,7 @@ namespace OrderFood.Areas.Admin.Controllers
             ViewBag.CategoryId = q1.ToList();
             return View("EditFood", _dishRepository.findById(id));
         }
+        //Đếm món ăn đang có
+
     }
 }

@@ -13,7 +13,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>N O No</title>
+    <title>Fast Food</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -47,7 +47,7 @@
             <nav class="navbar navbar-expand-lg custom_nav-container ">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <span>
-                        N o No
+                        Fast Food
                     </span>
                 </a>
 
@@ -173,16 +173,16 @@
                                     <label asp-for="Input.Email" class="form-label"></label>
                                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                                     
-                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    
                                 </div>
                                 <div class="form-group mb-3">
                                     <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
                                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
                                   
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                   
                                 </div>
                                 <div class="form-group">
-                                    
+                                    <div asp-validation-summary="All" class="text-danger"></div>
                                     <button id="login-submit" type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng nhập</button>
                                 </div>
                                

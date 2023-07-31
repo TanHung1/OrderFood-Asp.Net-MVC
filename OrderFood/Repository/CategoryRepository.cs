@@ -11,6 +11,7 @@ namespace OrderFood.Repository
         List<Category> Search(string searchString);
         public bool CheckNameCategory(string nameNameCategory);
         public List<Category> GetAll();
+        int CountCategory();
     }
     public class CategoryRepository : ICategoryRepository
     {
@@ -70,6 +71,10 @@ namespace OrderFood.Repository
         public List<Category> Search(string searchString)
         {
             return _dBContext.Categories.Where(c => c.NameCategory.Contains(searchString)).ToList();
+        }
+        public int CountCategory()
+        {
+            return _dBContext.Categories.Count();
         }
     }
 }

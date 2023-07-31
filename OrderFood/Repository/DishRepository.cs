@@ -18,6 +18,8 @@ namespace OrderFood.Repository
 
         List<Dish> PriceDecrease();
         Dish findById(Guid dishId);
+        int CountDishes();
+
     }
     public class DishRepository : IDishRepository
     {
@@ -98,6 +100,11 @@ namespace OrderFood.Repository
         public List<Dish> SearchDish(string searchString)
         {
             return _dbContext.Dishes.Where(x => x.NameDish.Contains(searchString)).ToList();
+        }
+
+        public int CountDishes()
+        {
+            return _dbContext.Dishes.Count();
         }
     }
 }

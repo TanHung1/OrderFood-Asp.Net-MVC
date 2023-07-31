@@ -11,7 +11,7 @@ namespace OrderFood.Areas.Admin.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        public IActionResult Index(string searchString, int page = 1, int pageSize = 2)
+        public IActionResult Index(string searchString, int page = 1, int pageSize = 10)
         {
             List<Category> categories;
             if (!string.IsNullOrEmpty(searchString))
@@ -83,5 +83,7 @@ namespace OrderFood.Areas.Admin.Controllers
             _categoryRepository.Update(category);
             return RedirectToAction("Index");
         }
+
+
     }
 }
